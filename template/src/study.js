@@ -15,6 +15,7 @@
 window.$ = window.jQuery = require("jquery");
 require("bootstrap");
 require("jquery-ui-bundle");
+require("alpaca");
 var LITW_STUDY_CONTENT = require("./data");
 var irbTemplate = require("../templates/irb.html");
 var demographicsTemplate = require("../templates/demographics.html");
@@ -344,7 +345,8 @@ module.exports = (function() {
 			["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"].concat(params.stims),
 			function() {
 				configureStudy();
-				showIRB(startStudy);
+				//showIRB(startStudy);
+				startStudy();
 			},
 			
 			// update loading indicator as stims preload
