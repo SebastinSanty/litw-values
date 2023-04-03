@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-12">
+        <h3 class="h3 bolded-blue text-center" data-i18n="study-values-vquest-title1"></h3>
+        <br>
+    </div>
+</div>
+<div id="valuesForm" style="text-align: left"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#valuesForm").alpaca({
+            "data": false,
+            "schema": {
+                "description": "Human Values - Part 1",
+                "type": "object",
+                "properties": {
+                    "values-q1": {
+                        "title": $.i18n('study-values-vquest-q1'),
+                        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "required": true
+                    },
+                }
+            },
+            "options": {
+                "fields": {
+                    "values-q1": {
+                        "type": 'radio',
+                        "optionLabels": [$.i18n('litw-study-values-r_imp_naai'), '2', '3', '4', '5', '6', '7', '8', '9',
+                            $.i18n('litw-study-values-r_imp_vi')],
+                        "sort": false,
+                        "showMessages": false,
+                        "vertical": false
+                    },
+                }
+            },
+            "postRender": function(control) {
+                $('#btn-next-page').attr('style', 'display:none;');
+                $(".alpaca-required-indicator").html(" *");
+                $("input[type='text']").css('width', '200px');
+            },
+            "view": {
+                "callbacks": {
+                    "valid": function () {
+                        $('#btn-next-page').attr('style', 'display:block;');
+                        $('#btn-next-page')[0].scrollIntoView();
+                    },
+                    "invalid": function () {
+                        $('#btn-next-page').attr('style', 'display:none;');
+                    }
+                }
+            },
+        });
+    });
+</script>
+
+<script>
+    $('[data-toggle="tooltip"]').tooltip();
+</script>

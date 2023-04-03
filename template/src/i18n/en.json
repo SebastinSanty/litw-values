@@ -80,5 +80,18 @@
   "litw-instruct-body-2-p1": "Your job is to decide which picture you identify with most. You'll do this by pressing 1 on your keyboard to select the left image and 2 to select the right image. You may also use your mouse to select an image.",
   "litw-instruct-body-2-p2": "After your choice, we will run some hyper-complicated algorithms to predict your future. Let's give it a try!",
   "litw-instruct-body-2-p1-touch": "Your job is to decide which picture you identify with most. You'll do this by tapping on the image you identify with to select it.",
-  "litw-instruct-body-2-p2-touch": "After your choice, we will run some hyper-complicated algorithms to predict your future. Let's give it a try!"
+  "litw-instruct-body-2-p2-touch": "After your choice, we will run some hyper-complicated algorithms to predict your future. Let's give it a try!",
+  "study-values-vquest-title1": "In order to know whether you could work with our AI, we first need to get to know you a little bit :)",
+  "study-values-vquest-title2": "Just these few more questions and you are ready so work with our AI! ;)",
+  "study-values-vquest-q1": "How important is God in your life?",
+  "study-values-vquest-q2": "Can homosexuality always be justified, never be justified, or is it something in between?",
+  "study-values-vquest-q3": "Have you ever signed a petition, or would you do it or not under any circumstances?",
+  "study-values-vquest-q4": "Can abortion always be justified, never be justified, or is it something in between?",
+  "study-values-vquest-q5": "Taking all things together, would you say you are:",
+  "study-values-vquest-q6": "",
+  "study-values-vquest-q7": "",
+  "study-values-vquest-q8": "",
+  "study-values-vquest-q9": "",
+  "study-values-vquest-q10": "",
+  "study-values-vquest-q11": ""
 }

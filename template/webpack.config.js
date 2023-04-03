@@ -1,5 +1,5 @@
 var path = require("path");
-var webpack = require("webpack");
+//var webpack = require("webpack");
 
 var config = {
   entry: path.join(__dirname, "src", "study.js"),
@@ -8,12 +8,36 @@ var config = {
     filename: "bundle.min.js"
   },
   module: {
-    loaders: [
-      // NOTE: make jquery available globally, so LITW modules
-      // and jsPsych loaded externally can use it
-      { test: require.resolve('jquery'), loader: 'expose-loader?jQuery!expose-loader?$' },
-      { test: /.*\.html$/, loader: "handlebars-loader" }
+    rules: [
+        {
+          test: require.resolve('jquery'),
+            use: [{
+              loader: 'expose-loader',
+              options: 'jQuery'
+            },
+            {
+              loader: 'expose-loader',
+              options: '$'
+            }
+            ]
+        },
+        {
+          test: /.*\.html$/, loader: "handlebars-loader"
+        }
     ]
+  },
+  externals: [
+    /^(jquery.i18n|\$)$/i,
+    // {
+    //   alpaca: "alpaca"
+    // }
+  ],
+  resolve: {
+    fallback: {
+      "fs": false,
+      "path": false,
+      "url": false
+    },
   }
 };
 
