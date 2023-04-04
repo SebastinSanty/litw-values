@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <h3 class="h3 bolded-blue text-center" data-i18n="study-values-vquest-title1"></h3>
+        <h4 class="h4 bolded-blue text-center" data-i18n="study-values-vquest-title1"></h4>
         <br>
     </div>
 </div>
@@ -18,17 +18,84 @@
                         "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                         "required": true
                     },
+                    "values-q2": {
+                        "title": $.i18n('study-values-vquest-q2'),
+                        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "required": true
+                    },
+                    "values-q3": {
+                        "title": $.i18n('study-values-vquest-q3'),
+                        "enum": [1, 2, 3],
+                        "required": true
+                    },
+                    "values-q4": {
+                        "title": $.i18n('study-values-vquest-q4'),
+                        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        "required": true
+                    },
+                    "values-q5": {
+                        "title": $.i18n('study-values-vquest-q5'),
+                        "enum": [1, 2, 3, 4],
+                        "required": true
+                    },
                 }
             },
             "options": {
                 "fields": {
                     "values-q1": {
-                        "type": 'radio',
-                        "optionLabels": [$.i18n('litw-study-values-r_imp_naai'), '2', '3', '4', '5', '6', '7', '8', '9',
-                            $.i18n('litw-study-values-r_imp_vi')],
+                        "type": 'select',
+                        "optionLabels": [$.i18n('study-values-vquest-r_imp_naai'), '2', '3', '4', '5', '6', '7', '8', '9',
+                            $.i18n('study-values-vquest-r_imp_vi')],
                         "sort": false,
                         "showMessages": false,
-                        "vertical": false
+                        "noneLabel": "--",
+                        "removeDefaultNone": false,
+                        "showMessages": false,
+                        "default": "--"
+                    },
+                    "values-q2": {
+                        "type": 'select',
+                        "optionLabels": [$.i18n('study-values-vquest-r_just_nj'), '2', '3', '4', '5', '6', '7', '8', '9',
+                            $.i18n('study-values-vquest-r_just_aj')],
+                        "sort": false,
+                        "showMessages": false,
+                        "noneLabel": "--",
+                        "removeDefaultNone": false,
+                        "showMessages": false,
+                        "default": "--"
+                    },
+                    "values-q3": {
+                        "type": 'select',
+                        "optionLabels": [$.i18n('study-values-vquest-r_do_hd'), $.i18n('study-values-vquest-r_do_md'),
+                            $.i18n('study-values-vquest-r_do_wnd')],
+                        "sort": false,
+                        "showMessages": false,
+                        "noneLabel": "--",
+                        "removeDefaultNone": false,
+                        "showMessages": false,
+                        "default": "--"
+                    },
+                    "values-q4": {
+                        "type": 'select',
+                        "optionLabels": [$.i18n('study-values-vquest-r_just_nj'), '2', '3', '4', '5', '6', '7', '8', '9',
+                            $.i18n('study-values-vquest-r_just_aj')],
+                        "sort": false,
+                        "showMessages": false,
+                        "noneLabel": "--",
+                        "removeDefaultNone": false,
+                        "showMessages": false,
+                        "default": "--"
+                    },
+                    "values-q5": {
+                        "type": 'select',
+                        "optionLabels": [$.i18n('study-values-vquest-r_hpp_vh'), $.i18n('study-values-vquest-r_hpp_qh'),
+                            $.i18n('study-values-vquest-r_do_wnd'), $.i18n('study-values-vquest-r_hpp_nvh')],
+                        "sort": false,
+                        "showMessages": false,
+                        "noneLabel": "--",
+                        "removeDefaultNone": false,
+                        "showMessages": false,
+                        "default": "--"
                     },
                 }
             },

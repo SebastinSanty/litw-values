@@ -63,18 +63,18 @@ module.exports = (function() {
 		// ******* BEGIN STUDY PROGRESSION ******** //
 
 		// DEMOGRAPHICS
-		timeline.push({
-            type: "display-slide",
-            template: demographicsTemplate,
-            display_element: $("#demographics"),
-            name: "demographics",
-            finish: function(){
-            	var dem_data = $('#demographicsForm').alpaca().getValue();
-				dem_data['time_elapsed'] = getSlideTime();
-            	jsPsych.data.addProperties({demographics:dem_data});
-            	LITW.data.submitDemographics(dem_data);
-            }
-        });
+		// timeline.push({
+        //     type: "display-slide",
+        //     template: demographicsTemplate,
+        //     display_element: $("#demographics"),
+        //     name: "demographics",
+        //     finish: function(){
+        //     	var dem_data = $('#demographicsForm').alpaca().getValue();
+		// 		dem_data['time_elapsed'] = getSlideTime();
+        //     	jsPsych.data.addProperties({demographics:dem_data});
+        //     	LITW.data.submitDemographics(dem_data);
+        //     }
+        // });
 
 
 		// VALUES PART 1
