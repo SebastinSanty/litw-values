@@ -18,11 +18,13 @@ require("./jquery.i18n");
 require("./jquery.i18n.messagestore");
 require("bootstrap");
 require("alpaca");
+//TODO: We don't need the whole d3 for only reading a csv.
+import * as d3_csv from "d3-fetch";
 var LITW_STUDY_CONTENT= require("./data");
 var irbTemplate = require("../templates/irb.html");
 var demographicsTemplate = require("../templates/demographics.html");
 var values1Template = require("../templates/values1.html");
-var instructionsTemplate = require("../templates/instructions.html");
+var conversationTemplate = require("../templates/ai_conversation.html");
 var loadingTemplate = require("../templates/loading.html");
 var resultsTemplate = require("../templates/results.html");
 var progressTemplate = require("../templates/progress.html");
@@ -37,7 +39,9 @@ module.exports = (function() {
 	var timeline = [],
 	params = {
 		currentProgress: 0,
-		preLoad: ["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"]
+		preLoad: ["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"],
+		convo_data: null,
+		convo_length: 2
 	};
 
 	function showIRB(afterIRBFunction) {
@@ -78,28 +82,44 @@ module.exports = (function() {
 
 
 		// VALUES PART 1
+		// timeline.push({
+        //     type: "display-slide",
+        //     template: values1Template,
+        //     display_element: $("#values1"),
+        //     name: "values1",
+        //     finish: function(){
+        //     	var values1_data = $('#valuesForm').alpaca().getValue();
+		// 		values1_data['time_elapsed'] = getSlideTime();
+        //     	jsPsych.data.addProperties({values1:values1_data});
+        //     	LITW.data.submitStudyData(values1_data);
+        //     }
+        // });
+
+		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
+		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
+		let msgs = [];
+		for (let counter = 0; counter < params.convo_length; counter++ ){
+			let num = Math.floor(Math.random() * params.convo_data.length);
+			let convo = params.convo_data[num];
+			msgs.push({
+				i: counter+1,
+				q:convo.snippetq,
+				a:convo.snippeta
+			})
+		}
+		// console.log(convo);
 		timeline.push({
             type: "display-slide",
-            template: values1Template,
-            display_element: $("#values1"),
-            name: "values1",
+            template: conversationTemplate({convo: msgs}),
+            display_element: $("#ai_convo"),
+            name: "ai_conversation",
             finish: function(){
-            	var values1_data = $('#valuesForm').alpaca().getValue();
-				values1_data['time_elapsed'] = getSlideTime();
-            	jsPsych.data.addProperties({values1:values1_data});
-            	LITW.data.submitStudyData(values1_data);
+            	// var dem_data = $('#demographicsForm').alpaca().getValue();
+				// dem_data['time_elapsed'] = getSlideTime();
+            	// jsPsych.data.addProperties({demographics:dem_data});
+            	// LITW.data.submitDemographics(dem_data);
             }
         });
-
-
-		// 1. GENERAL INSTRUCTIONS PAGE
-		timeline.push({
-			type: "display-slide",
-            display_element: $("#instructions"),
-			name: "instructions",
-            template: instructionsTemplate({withTouch: window.litwWithTouch})
-		});
-
 
 		timeline.push({
 			type: "display-slide",
@@ -133,9 +153,9 @@ module.exports = (function() {
 	function startStudy() {
 		LITW.utils.showSlide("trials");
 		jsPsych.init({
-		  timeline: timeline,
-		  on_finish: showResults,
-		  display_element: $("#trials")
+			timeline: timeline,
+			on_finish: showResults,
+			display_element: $("#trials")
 		});
 	}
 
@@ -176,9 +196,13 @@ module.exports = (function() {
 			//start the study when resources are preloaded
 			jsPsych.pluginAPI.preloadImages( params.preLoad,
 				function() {
-					configureStudy();
-					//showIRB(startStudy);
-					startStudy();
+					//TODO: This is a strange place to put this file loading!
+					d3_csv.csv("src/i18n/conversations-en.csv").then(function(data) {
+						params.convo_data = data;
+						configureStudy();
+						//showIRB(startStudy);
+						startStudy();
+					});
 				},
 
 				// update loading indicator

@@ -1,0 +1,125 @@
+<!-- Template for instructions page -->
+
+<h2 class="bolded-blue" data-i18n="litw-instruct-header"></h2>
+	<p data-i18n="litw-instruct-body-1-p1"></p>
+    <div class="col-5">
+        <div id="convbox" class="container bg-light">
+            <div class="row">
+                <div id="snippeti" class="col-8 robot-bg message-cloud p-2">
+                    <div id="messagei" data-i18n="study-convo-start"></div>
+                    <div id="senti" class="smallt" data-i18n="study-convo-by_ai"></div>
+                    <div id="loadingi" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+
+            {{#each convo}}
+            <div class="row pt-4">
+                <div id="snippetq{{ this.i }}" class="col-8 human-bg message-cloud p-2 offset-4 hidden">
+                    <div id="messageq{{ this.i }}">{{ this.q }}</div>
+                    <div id="sentq{{ this.i }}" class="smallt" data-i18n="study-convo-by_you"></div>
+                    <div id="loadingq{{ this.i }}" class="lds-ellipsis lds-human"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+            <div class="row pt-4 pb-4">
+                <div id="snippeta{{ this.i }}" class="col-8 robot-bg message-cloud p-2 hidden">
+                    <div id="messagea{{ this.i }}">{{ this.a }}</div>
+                    <div id="senta{{ this.i }}" class="smallt" data-i18n="study-convo-by_ai"></div>
+                    <div id="loadinga{{ this.i }}" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+        <div id="typebox" class="container bg-light mb-3">
+            <div class="row">
+                <div class="col-12 rounded p-2">
+                    <div class="rounded px-2 py-1" style="border:2px inset #AAA;">
+                        <div id="snippettype"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="questions" class="d-grid gap-2 hidden">
+            <button id="button_q1" type="button" class="btn btn-primary" onclick="question_chosen(1)"></button>
+            <button id="button_q2" type="button" class="btn btn-primary" onclick="question_chosen(2)"></button>
+        </div>
+    </div>
+
+<script>
+    let current_convo = 0;
+
+    let show_message = function (type, number) {
+        return new Promise(function(resolve, reject) {
+            console.log(`showing message number ${number} of type ${type}`);
+            $(`#snippet${type}${number}`).show().delay(500).animate({opacity: 1}, 200);
+            setTimeout(function () {
+                $(`#loading${type}${number}`).fadeOut(500, function () {
+                    $(`#message${type}${number}`).fadeIn(500);
+                    $(`#sent${type}${number}`).fadeIn(500);
+                });
+            }, 1500);
+        });
+    };
+
+    //TODO: I think we will be better of with adding messages on the fly instead of pre-filling up the page.
+    let add_msg = function (msg_number) {
+        return new Promise( function (resolve, reject) {
+            console.log(`Sent message ${msg_number}`);
+        })
+    }
+
+    let req_question = function () {
+        console.log(`Starting convo ${++current_convo}`);
+        /*TODO: will probably need to store the convo data to randomly assign them here*/
+        let q1 = $('#messageq1').text();
+        let q2 = $('#messageq2').text();
+
+        $('#button_q1').text(q1);
+        $('#button_q2').text(q2);
+        $('#questions').show();
+    }
+
+    let question_chosen = function( choice_num ) {
+        console.log(`Question choice ${choice_num}`);
+        show_message('q', choice_num).then( function () {
+            setTimeout(function () {
+                console.log(`And the answer is: ${choice_num}`);
+                show_message('a', choice_num);
+            }, 2000);
+        }())
+    }
+
+
+    let ipromise = new Promise(function(resolve, reject) {
+        let typing = new TypeIt("#snippettype", {
+            startDelay: 5000,
+            speed: 20,
+            strings: $("messageq").value,
+            afterComplete: function () {
+                $("#loadingq").fadeOut(1500, function () {
+                    $("#messageq").fadeIn(500);
+                    $("#sentq").fadeIn(500);
+                    $("#snippettype").animate({opacity: 0}, 300);
+                    $('#snippeta').delay(3000).animate({opacity: 1}, 200);
+                    setTimeout(function () {
+                        $("#loadinga").fadeOut(500, function () {
+                            $("#messagea").fadeIn(500);
+                            $("#senta").fadeIn(500);
+                            setTimeout(function () {
+                                $("#nextbutton").fadeIn(100);
+                            }, 2000);
+                        });
+                    }, 5000);
+                });
+            }
+        }).go();
+    });
+
+    let convo_start = new Promise(function (resolve, reject){
+        show_message("i","")
+    });
+
+    convo_start.then( req_question() );
+
+</script>
+

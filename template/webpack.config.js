@@ -28,9 +28,9 @@ var config = {
   },
   externals: [
     /^(jquery.i18n|\$)$/i,
-    // {
-    //   alpaca: "alpaca"
-    // }
+    {
+       d3: "d3"
+    }
   ],
   resolve: {
     fallback: {
