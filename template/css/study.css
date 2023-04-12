@@ -37,9 +37,15 @@
         display: none;
     }
 
-    .smallt {
+    .small_ai {
         font-size: 9pt;
         color: #888;
+        display: none;
+    }
+
+    .small_human {
+        font-size: 9pt;
+        color: #ffffff;
         display: none;
     }
 
@@ -100,25 +106,24 @@
         content: "";
     }
 
-
-
-
-
-    /* .message-cloud {
-        border-radius: 20px;
-        padding: 15px !important;
-    } */
-
     #convbox {
         border: solid 2px #777;
-        min-height: 40vh;
+        height: 600px;
+        width: 500px;
+    }
+
+    #convbox .row {
+
     }
 
     #typebox {
         border: solid 2px #777;
+        width: 500px;
     }
 
-
+    #questions {
+        width: 500px;
+    }
 
     .lds-ellipsis {
             display: inline-block;

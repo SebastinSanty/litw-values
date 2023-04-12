@@ -3,32 +3,22 @@
 <h2 class="bolded-blue" data-i18n="litw-instruct-header"></h2>
 	<p data-i18n="litw-instruct-body-1-p1"></p>
     <div class="col-5">
-        <div id="convbox" class="container bg-light">
-            <div class="row">
-                <div id="snippeti" class="col-8 robot-bg message-cloud p-2">
-                    <div id="messagei" data-i18n="study-convo-start"></div>
-                    <div id="senti" class="smallt" data-i18n="study-convo-by_ai"></div>
-                    <div id="loadingi" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>
+        <div id="convbox" class="container bg-light overflow-auto">
+            <div id="intro">
+                <div id="intro_snippet" class="col-8 robot-bg message-cloud p-2">
+                    <div id="intro_message" data-i18n="study-convo-start"></div>
+                    <div id="intro_sent" class="small_ai" data-i18n="study-convo-by_ai"></div>
+                    <div id="intro_loading" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>
                 </div>
             </div>
-
-            {{#each convo}}
-            <div class="row pt-4">
-                <div id="snippetq{{ this.i }}" class="col-8 human-bg message-cloud p-2 offset-4 hidden">
-                    <div id="messageq{{ this.i }}">{{ this.q }}</div>
-                    <div id="sentq{{ this.i }}" class="smallt" data-i18n="study-convo-by_you"></div>
-                    <div id="loadingq{{ this.i }}" class="lds-ellipsis lds-human"><div></div><div></div><div></div><div></div></div>
+            <div id="convo_thread"></div>
+            <div id="bye">
+                <div id="bye_snippet" class="col-8 robot-bg message-cloud p-2 hidden">
+                    <div id="bye_message" data-i18n="study-convo-end"></div>
+                    <div id="bye_sent" class="small_ai" data-i18n="study-convo-by_ai"></div>
+                    <div id="bye_loading" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>
                 </div>
             </div>
-            <div class="row pt-4 pb-4">
-                <div id="snippeta{{ this.i }}" class="col-8 robot-bg message-cloud p-2 hidden">
-                    <div id="messagea{{ this.i }}">{{ this.a }}</div>
-                    <div id="senta{{ this.i }}" class="smallt" data-i18n="study-convo-by_ai"></div>
-                    <div id="loadinga{{ this.i }}" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>
-                </div>
-            </div>
-            {{/each}}
-
         </div>
         <div id="typebox" class="container bg-light mb-3">
             <div class="row">
@@ -39,52 +29,73 @@
                 </div>
             </div>
         </div>
-        <div id="questions" class="d-grid gap-2 hidden">
-            <button id="button_q1" type="button" class="btn btn-primary" onclick="question_chosen(1)"></button>
-            <button id="button_q2" type="button" class="btn btn-primary" onclick="question_chosen(2)"></button>
+        <div id="questions" class="gap-2 hidden">
+            <button id="button_q1" type="button" class="btn btn-primary" onclick="question_chosen(1)">B1</button>
+            <button id="button_q2" type="button" class="btn btn-primary" onclick="question_chosen(2)">B2</button>
         </div>
     </div>
 
 <script>
+    let convos = LITW.study.params.convo_snippets;
+    $('#btn-next-page').attr('style', 'display:none;');
     let current_convo = 0;
 
-    let show_message = function (type, number) {
+    let show_message = function (msg_id, take_time=1500, callback) {
         return new Promise(function(resolve, reject) {
-            console.log(`showing message number ${number} of type ${type}`);
-            $(`#snippet${type}${number}`).show().delay(500).animate({opacity: 1}, 200);
+            $(`#${msg_id}_snippet`).show().delay(take_time/3).animate({opacity: 1}, take_time/10);
+            $(`#${msg_id}_snippet`)[0].scrollIntoView();
             setTimeout(function () {
-                $(`#loading${type}${number}`).fadeOut(500, function () {
-                    $(`#message${type}${number}`).fadeIn(500);
-                    $(`#sent${type}${number}`).fadeIn(500);
+                $(`#${msg_id}_loading`).fadeOut(take_time/3, function () {
+                    $(`#${msg_id}_message`).fadeIn(take_time/3);
+                    $(`#${msg_id}_sent`).fadeIn(take_time/3);
                 });
-            }, 1500);
+                callback();
+            }, take_time);
         });
     };
 
-    //TODO: I think we will be better of with adding messages on the fly instead of pre-filling up the page.
-    let add_msg = function (msg_number) {
-        return new Promise( function (resolve, reject) {
-            console.log(`Sent message ${msg_number}`);
-        })
+    let add_convo = function (q_id, q_string, a_id, a_string) {
+        $('#convo_thread').append(`<div id="${q_id}" class="pt-4"></div>`);
+        $(`#${q_id}`).append(`<div id="${q_id}_snippet" class="col-8 human-bg message-cloud p-2 offset-4 hidden"></div>`);
+        $(`#${q_id}_snippet`).append(`<div id="${q_id}_message" class="hidden">${q_string}</div>`);
+        $(`#${q_id}_snippet`).append(`<div id="${q_id}_sent" class="small_human">${$.i18n('study-convo-by_you')}</div>`);
+        $(`#${q_id}_snippet`).append(`<div id="${q_id}_loading" class="lds-ellipsis lds-human"><div></div><div></div><div></div><div></div></div>`);
+        $('#convo_thread').append(`<div id="${a_id}" class="pt-4 pb-4"></div>`);
+        $(`#${a_id}`).append(`<div id="${a_id}_snippet" class="col-8 robot-bg message-cloud p-2 hidden"></div>`);
+        $(`#${a_id}_snippet`).append(`<div id="${a_id}_message" class="hidden">${a_string}</div>`);
+        $(`#${a_id}_snippet`).append(`<div id="${a_id}_sent" class="small_ai">${$.i18n('study-convo-by_ai')}</div>`);
+        $(`#${a_id}_snippet`).append(`<div id="${a_id}_loading" class="lds-ellipsis lds-robot"><div></div><div></div><div></div><div></div></div>`);
     }
 
     let req_question = function () {
-        console.log(`Starting convo ${++current_convo}`);
-        /*TODO: will probably need to store the convo data to randomly assign them here*/
-        let q1 = $('#messageq1').text();
-        let q2 = $('#messageq2').text();
+        current_convo+=1;
+        if(current_convo <= convos.length) {
+            let q1 = convos[current_convo-1]['q1'];
+            let q2 = convos[current_convo-1]['q2'];
 
-        $('#button_q1').text(q1);
-        $('#button_q2').text(q2);
-        $('#questions').show();
+            $('#button_q1').text(q1);
+            $('#button_q2').text(q2);
+            $('#questions').css('display', 'grid');
+            $('#questions')[0].scrollIntoView();
+        } else {
+            show_message('bye', 1000, function (){
+                //TODO: We need a new LITW.utils that only shows, but doesn't configure the next button!!!!
+                $('#btn-next-page').attr('style', 'display:block;');
+                $('#btn-next-page')[0].scrollIntoView();
+            })
+        }
     }
 
     let question_chosen = function( choice_num ) {
-        console.log(`Question choice ${choice_num}`);
-        show_message('q', choice_num).then( function () {
+        add_convo(`q${current_convo}`, convos[current_convo-1][`q${choice_num}`],
+                  `a${current_convo}`, convos[current_convo-1][`a${choice_num}`]);
+        show_message(`q${current_convo}`, 1500, function (){
+            $('#questions').hide();
+        }).then( function () {
             setTimeout(function () {
-                console.log(`And the answer is: ${choice_num}`);
-                show_message('a', choice_num);
+                show_message(`a${current_convo}`, 1500, function (){
+                    req_question();
+                });
             }, 2000);
         }())
     }
@@ -115,11 +126,11 @@
         }).go();
     });
 
-    let convo_start = new Promise(function (resolve, reject){
-        show_message("i","")
-    });
+    let convo_start = function (){
+        show_message("intro", 1500, req_question);
+    };
 
-    convo_start.then( req_question() );
+    convo_start();
 
 </script>
 

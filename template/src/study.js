@@ -32,7 +32,7 @@ var commentsTemplate = require("../templates/comments.html");
 require("./jspsych-display-info");
 require("./jspsych-display-slide");
 
-module.exports = (function() {
+module.exports = (function(exports) {
 
 	window.litwWithTouch = false;
 
@@ -41,7 +41,8 @@ module.exports = (function() {
 		currentProgress: 0,
 		preLoad: ["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"],
 		convo_data: null,
-		convo_length: 2
+		convo_length: 2,
+		convo_snippets: []
 	};
 
 	function showIRB(afterIRBFunction) {
@@ -97,20 +98,25 @@ module.exports = (function() {
 
 		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
 		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
-		let msgs = [];
 		for (let counter = 0; counter < params.convo_length; counter++ ){
-			let num = Math.floor(Math.random() * params.convo_data.length);
-			let convo = params.convo_data[num];
-			msgs.push({
-				i: counter+1,
-				q:convo.snippetq,
-				a:convo.snippeta
-			})
+			let num1 = Math.floor(Math.random() * params.convo_data.length);
+			let num2 = num1;
+			while(num1 == num2){
+				num2 = Math.floor(Math.random() * params.convo_data.length);
+			}
+			let convo1 = params.convo_data[num1];
+			let convo2 = params.convo_data[num2];
+			params.convo_snippets.push({
+				q1:convo1.snippetq,
+				a1:convo1.snippeta,
+				q2:convo2.snippetq,
+				a2:convo2.snippeta
+			});
 		}
 		// console.log(convo);
 		timeline.push({
             type: "display-slide",
-            template: conversationTemplate({convo: msgs}),
+            template: conversationTemplate(),
             display_element: $("#ai_convo"),
             name: "ai_conversation",
             finish: function(){
@@ -216,6 +222,9 @@ module.exports = (function() {
 			);
 		});
 	});
-})();
+	exports.study = {};
+	exports.study.params = params
+
+})( window.LITW = window.LITW || {} );
 
 
