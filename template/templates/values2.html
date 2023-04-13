@@ -1,40 +1,45 @@
 <div class="row">
     <div class="col-12">
-        <h4 class="h4 bolded-blue text-center" data-i18n="study-values-vquest-title1"></h4>
+        <h4 class="h4 bolded-blue text-center" data-i18n="study-values-vquest-title2"></h4>
         <br>
     </div>
 </div>
-<div id="valuesForm1" style="text-align: left"></div>
+<div id="valuesForm2" style="text-align: left"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#valuesForm1").alpaca({
+        $("#valuesForm2").alpaca({
             "data": false,
             "schema": {
-                "description": "Human Values - Part 1",
+                "description": "Human Values - Part 2",
                 "type": "object",
                 "properties": {
-                    "q1": {
-                        "title": $.i18n('study-values-vquest-q1'),
-                        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "q6": {
+                        "enum": [1, 2],
                         "required": true
                     },
-                    "q2": {
-                        "title": $.i18n('study-values-vquest-q2'),
-                        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "q7": {
+                        "title": $.i18n('study-values-vquest-q7'),
+                        "enum": [1, 2, 3, 4],
                         "required": true
                     },
-                    "q3": {
-                        "title": $.i18n('study-values-vquest-q3'),
+                    "q8": {
+                        "type": "string",
+                        "title": $.i18n('study-values-vquest-q8'),
+                        "enum": ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+                        "required": false
+                    },
+                    "q9": {
+                        "title": $.i18n('study-values-vquest-q9'),
                         "enum": [1, 2, 3],
                         "required": true
                     },
-                    "q4": {
-                        "title": $.i18n('study-values-vquest-q4'),
-                        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "q10": {
+                        "title": $.i18n('study-values-vquest-q10'),
+                        "enum": [1, 2, 3, 4],
                         "required": true
                     },
-                    "q5": {
-                        "title": $.i18n('study-values-vquest-q5'),
+                    "q11": {
+                        "title": $.i18n('study-values-vquest-q11'),
                         "enum": [1, 2, 3, 4],
                         "required": true
                     },
@@ -42,10 +47,10 @@
             },
             "options": {
                 "fields": {
-                    "q1": {
+                    "q6": {
+                        "label": $.i18n('study-values-vquest-q6'),
                         "type": 'select',
-                        "optionLabels": [$.i18n('study-values-vquest-r_imp_naai'), '2', '3', '4', '5', '6', '7', '8', '9',
-                            $.i18n('study-values-vquest-r_imp_vi')],
+                        "optionLabels": [$.i18n('study-values-vquest-r_tru_mpcbt'), $.i18n('study-values-vquest-r_tru_ntbvc')],
                         "sort": false,
                         "showMessages": false,
                         "noneLabel": "--",
@@ -53,10 +58,10 @@
                         "showMessages": false,
                         "default": "--"
                     },
-                    "q2": {
+                    "q7": {
                         "type": 'select',
-                        "optionLabels": [$.i18n('study-values-vquest-r_just_nj'), '2', '3', '4', '5', '6', '7', '8', '9',
-                            $.i18n('study-values-vquest-r_just_aj')],
+                        "optionLabels": [$.i18n('study-values-vquest-r_prd_vp'), $.i18n('study-values-vquest-r_prd_qp'),
+                            $.i18n('study-values-vquest-r_prd_nvp'), $.i18n('study-values-vquest-r_prd_naap'), ],
                         "sort": false,
                         "showMessages": false,
                         "noneLabel": "--",
@@ -64,10 +69,21 @@
                         "showMessages": false,
                         "default": "--"
                     },
-                    "q3": {
+                    "q8": {
+                        "type": 'checkbox',
+                        "optionLabels": [$.i18n('study-values-vquest-r_chi_gm'), $.i18n('study-values-vquest-r_chi_ind'),
+                            $.i18n('study-values-vquest-r_chi_hw'), $.i18n('study-values-vquest-r_chi_for'),
+                            $.i18n('study-values-vquest-r_chi_img'), $.i18n('study-values-vquest-r_chi_tnrfop'),
+                            $.i18n('study-values-vquest-r_chi_tsmnt'), $.i18n('study-values-vquest-r_chi_dnp'),
+                            $.i18n('study-values-vquest-r_chi_rf'), $.i18n('study-values-vquest-r_chi_uns'),
+                            $.i18n('study-values-vquest-r_chi_obd')],
+                        "sort": false,
+                        "showMessages": false
+                    },
+                    "q9": {
                         "type": 'select',
-                        "optionLabels": [$.i18n('study-values-vquest-r_do_hd'), $.i18n('study-values-vquest-r_do_md'),
-                            $.i18n('study-values-vquest-r_do_wnd')],
+                        "optionLabels": [$.i18n('study-values-vquest-r_good_gt'), $.i18n('study-values-vquest-r_good_dm'),
+                            $.i18n('study-values-vquest-r_good_bt')],
                         "sort": false,
                         "showMessages": false,
                         "noneLabel": "--",
@@ -75,10 +91,10 @@
                         "showMessages": false,
                         "default": "--"
                     },
-                    "q4": {
+                    "q10": {
                         "type": 'select',
-                        "optionLabels": [$.i18n('study-values-vquest-r_just_nj'), '2', '3', '4', '5', '6', '7', '8', '9',
-                            $.i18n('study-values-vquest-r_just_aj')],
+                        "optionLabels": [$.i18n('study-values-vquest-r_aim_moitn'), $.i18n('study-values-vquest-r_aim_gpms'),
+                            $.i18n('study-values-vquest-r_aim_frp'), $.i18n('study-values-vquest-r_aim_pfos')],
                         "sort": false,
                         "showMessages": false,
                         "noneLabel": "--",
@@ -86,10 +102,10 @@
                         "showMessages": false,
                         "default": "--"
                     },
-                    "q5": {
+                    "q11": {
                         "type": 'select',
-                        "optionLabels": [$.i18n('study-values-vquest-r_hpp_vh'), $.i18n('study-values-vquest-r_hpp_qh'),
-                            $.i18n('study-values-vquest-r_do_wnd'), $.i18n('study-values-vquest-r_hpp_nvh')],
+                        "optionLabels": [$.i18n('study-values-vquest-r_aim_moitn'), $.i18n('study-values-vquest-r_aim_gpms'),
+                            $.i18n('study-values-vquest-r_aim_frp'), $.i18n('study-values-vquest-r_aim_pfos')],
                         "sort": false,
                         "showMessages": false,
                         "noneLabel": "--",
@@ -107,6 +123,7 @@
             "view": {
                 "callbacks": {
                     "valid": function () {
+                        //TODO: add validation to Q8 checklist number!
                         $('#btn-next-page').attr('style', 'display:block;');
                         $('#btn-next-page')[0].scrollIntoView();
                     },
