@@ -23,6 +23,9 @@ module.exports = jsPsych.plugins["display-slide"] = (function() {
             jsPsych.finishTrial();
         });
 
+        if (!trial.display_next_button) {
+            $('#btn-next-page').attr('style', 'display:none;');
+        }
         LITW.utils.showSlide(display_element[0].id);
         LITW.tracking.recordCheckpoint(display_element[0].id);
     };

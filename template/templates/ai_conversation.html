@@ -36,17 +36,21 @@
             <div id="questions" class="gap-2 hidden">
                 <button id="button_q1" type="button" class="btn btn-primary" onclick="question_chosen(1)">B1</button>
                 <button id="button_q2" type="button" class="btn btn-primary" onclick="question_chosen(2)">B2</button>
+                <button id="button_q3" type="button" class="hidden btn btn-secondary" onclick="question_chosen(FINAL_CONVO_VAL)" data-i18n="study-convo-done-btn"></button>
             </div>
 
         </div>
     </div>
 
 <script>
+    const MSG_TIMEOUT = 1500;
+    const FINAL_CONVO_VAL = 3;
+    const MIN_CONVO_SIZE = LITW.study.params.convo_length_min;
     let convos = LITW.study.params.convo_snippets;
-    $('#btn-next-page').attr('style', 'display:none;');
-    let current_convo = 0;
+    let current_convo = 1;
+    let user_interrupted_convo = false;
 
-    let show_message = function (msg_id, take_time=1500, callback) {
+    let show_message = function (msg_id, take_time=MSG_TIMEOUT, callback) {
         return new Promise(function(resolve, reject) {
             $(`#${msg_id}_snippet`).show().delay(take_time/3).animate({opacity: 1}, take_time/10);
             $(`#${msg_id}_snippet`)[0].scrollIntoView();
@@ -74,69 +78,66 @@
     }
 
     let req_question = function () {
-        current_convo+=1;
-        if(current_convo <= convos.length) {
-            let q1 = convos[current_convo-1]['q1'];
-            let q2 = convos[current_convo-1]['q2'];
+        let q1 = convos[current_convo-1]['q1'];
+        let q2 = convos[current_convo-1]['q2'];
 
-            $('#button_q1').text(q1);
-            $('#button_q2').text(q2);
-            $('#questions').css('display', 'grid');
-            $('#questions')[0].scrollIntoView();
-        } else {
-            show_message('bye', 1000, function (){
-                //TODO: We need a new LITW.utils that only shows, but doesn't configure the next button!!!!
-                $('#btn-next-page').attr('style', 'display:block;');
-                $('#btn-next-page')[0].scrollIntoView();
-            })
+        $('#button_q1').text(q1);
+        $('#button_q2').text(q2);
+        $('#questions').css('display', 'grid');
+        if (current_convo > MIN_CONVO_SIZE){
+            $('#button_q3').show();
         }
+        $('#questions')[0].scrollIntoView();
     }
 
     let question_chosen = function( choice_num ) {
-        add_convo(`q${current_convo}`, convos[current_convo-1][`q${choice_num}`],
-                  `a${current_convo}`, convos[current_convo-1][`a${choice_num}`]);
-        show_message(`q${current_convo}`, 1500, function (){
-            $('#questions').hide();
+        let convo_q_id = `q${current_convo}`;
+        let convo_q = convos[current_convo-1][`q${choice_num}`];
+        let convo_a_id = `a${current_convo}`;
+        let convo_a = convos[current_convo-1][`a${choice_num}`];
+        if (choice_num==FINAL_CONVO_VAL) {
+            convo_q = $.i18n('study-convo-end');
+            convo_a = $.i18n('study-convo-end_a');
+            user_interrupted_convo = true;
+        }
+        add_convo(convo_q_id, convo_q, convo_a_id, convo_a);
+        //TODO: this is creating a not so pleasant UX where the screen moves up with no need!
+        $('#questions').hide();
+        show_message(convo_q_id, MSG_TIMEOUT, function (){
         }).then( function () {
             setTimeout(function () {
-                show_message(`a${current_convo}`, 1500, function (){
-                    req_question();
-                });
-            }, 2000);
-        }())
+                show_message(convo_a_id, MSG_TIMEOUT, function (){
+                    next_step();
+                })
+            }, MSG_TIMEOUT);
+        }());
     }
 
-
-/*    let ipromise = new Promise(function(resolve, reject) {
-        let typing = new TypeIt("#snippettype", {
-            startDelay: 5000,
-            speed: 20,
-            strings: $("messageq").value,
-            afterComplete: function () {
-                $("#loadingq").fadeOut(1500, function () {
-                    $("#messageq").fadeIn(500);
-                    $("#sentq").fadeIn(500);
-                    $("#snippettype").animate({opacity: 0}, 300);
-                    $('#snippeta').delay(3000).animate({opacity: 1}, 200);
-                    setTimeout(function () {
-                        $("#loadinga").fadeOut(500, function () {
-                            $("#messagea").fadeIn(500);
-                            $("#senta").fadeIn(500);
-                            setTimeout(function () {
-                                $("#nextbutton").fadeIn(100);
-                            }, 2000);
-                        });
-                    }, 5000);
-                });
+    let next_step = function (){
+        if(user_interrupted_convo){
+            end_convo();
+        } else {
+            current_convo+=1;
+            if (current_convo <= convos.length) {
+                req_question();
+            } else {
+                show_message('bye', MSG_TIMEOUT, function (){
+                    end_convo();
+                })
             }
-        }).go();
-    });
-*/
+        }
+    }
+
+    let end_convo = function (){
+        //TODO: We need a new LITW.utils that only shows, but doesn't configure the next button!!!!
+        $('#btn-next-page').attr('style', 'display:block;');
+        $('#btn-next-page')[0].scrollIntoView();
+    }
+
     let convo_start = function (){
         $('#start_div').hide();
         $('#convo_div').show();
-        show_message("intro", 1500, req_question);
+        show_message("intro", MSG_TIMEOUT, req_question);
     };
-
 </script>
 

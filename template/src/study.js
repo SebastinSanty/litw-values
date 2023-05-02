@@ -24,8 +24,6 @@ var LITW_STUDY_CONTENT= require("./data");
 var irbTemplate = require("../templates/irb.html");
 var demographicsTemplate = require("../templates/demographics.html");
 var valuesTemplate = require("../templates/values.html");
-var values1Template = require("../templates/values1.html");
-var values2Template = require("../templates/values2.html");
 var conversationTemplate = require("../templates/ai_conversation.html");
 var loadingTemplate = require("../templates/loading.html");
 var resultsTemplate = require("../templates/results.html");
@@ -44,7 +42,8 @@ module.exports = (function(exports) {
 		preLoad: ["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"],
 		participant_values: {},
 		convo_data: null,
-		convo_length: 2,
+		convo_length_max: 10,
+		convo_length_min: 2,
 		convo_snippets: []
 	};
 
@@ -70,7 +69,7 @@ module.exports = (function(exports) {
 	function configureStudy() {
 		// ******* BEGIN STUDY PROGRESSION ******** //
 
-		// DEMOGRAPHICS
+		//DEMOGRAPHICS
 		// timeline.push({
         //     type: "display-slide",
         //     template: demographicsTemplate,
@@ -86,39 +85,22 @@ module.exports = (function(exports) {
 
 
 		// VALUES QUESTIONNAIRE
-		timeline.push({
-            type: "display-slide",
-            template: valuesTemplate,
-            display_element: $("#values"),
-            name: "values",
-            finish: function(){
-				//TODO Call method to get form data!
-            	let values_data = {}
-            	jsPsych.data.addProperties({values1:values_data});
-            	LITW.data.submitStudyData(values_data);
-            }
-        });
-
-		// // VALUES PART 2
 		// timeline.push({
         //     type: "display-slide",
-        //     template: values2Template,
-        //     display_element: $("#values2"),
-        //     name: "values2",
+        //     template: valuesTemplate,
+        //     display_element: $("#values"),
+        //     name: "values",
         //     finish: function(){
-        //     	var values2_data = $('#valuesForm2').alpaca().getValue();
-		// 		for(let quest of [6,7,8,9,10,11]) {
-		// 			params.participant_values[`q${quest}`]=values2_data[`q${quest}`];
-		// 		}
-		// 		values2_data['time_elapsed'] = getSlideTime();
-        //     	jsPsych.data.addProperties({values2:values2_data});
-        //     	LITW.data.submitStudyData(values2_data);
+		// 		//TODO Call method to get form data!
+        //     	let values_data = {}
+        //     	jsPsych.data.addProperties({values1:values_data});
+        //     	LITW.data.submitStudyData(values_data);
         //     }
         // });
 
 		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
 		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
-		for (let counter = 0; counter < params.convo_length; counter++ ){
+		for (let counter = 0; counter < params.convo_length_max; counter++ ){
 			let num1 = Math.floor(Math.random() * params.convo_data.length);
 			let num2 = num1;
 			while(num1 == num2){
@@ -133,9 +115,9 @@ module.exports = (function(exports) {
 				a2:convo2.snippeta
 			});
 		}
-		// console.log(convo);
 		timeline.push({
             type: "display-slide",
+			display_next_button: false,
             template: conversationTemplate(),
             display_element: $("#ai_convo"),
             name: "ai_conversation",
@@ -226,8 +208,8 @@ module.exports = (function(exports) {
 					d3_csv.csv("src/i18n/conversations-en.csv").then(function(data) {
 						params.convo_data = data;
 						configureStudy();
-						showIRB(startStudy);
-						//startStudy();
+						//showIRB(startStudy);
+						startStudy();
 					});
 				},
 

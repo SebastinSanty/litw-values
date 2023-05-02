@@ -108,6 +108,7 @@
 
     #convbox {
         border: solid 2px #777;
+        margin: 10px;
         height: 600px;
         width: 500px;
     }
