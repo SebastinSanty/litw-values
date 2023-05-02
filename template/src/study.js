@@ -23,6 +23,7 @@ import * as d3_csv from "d3-fetch";
 var LITW_STUDY_CONTENT= require("./data");
 var irbTemplate = require("../templates/irb.html");
 var demographicsTemplate = require("../templates/demographics.html");
+var valuesTemplate = require("../templates/values.html");
 var values1Template = require("../templates/values1.html");
 var values2Template = require("../templates/values2.html");
 var conversationTemplate = require("../templates/ai_conversation.html");
@@ -70,53 +71,50 @@ module.exports = (function(exports) {
 		// ******* BEGIN STUDY PROGRESSION ******** //
 
 		// DEMOGRAPHICS
+		// timeline.push({
+        //     type: "display-slide",
+        //     template: demographicsTemplate,
+        //     display_element: $("#demographics"),
+        //     name: "demographics",
+        //     finish: function(){
+        //     	var dem_data = $('#demographicsForm').alpaca().getValue();
+		// 		dem_data['time_elapsed'] = getSlideTime();
+        //     	jsPsych.data.addProperties({demographics:dem_data});
+        //     	LITW.data.submitDemographics(dem_data);
+        //     }
+        // });
+
+
+		// VALUES QUESTIONNAIRE
 		timeline.push({
             type: "display-slide",
-            template: demographicsTemplate,
-            display_element: $("#demographics"),
-            name: "demographics",
+            template: valuesTemplate,
+            display_element: $("#values"),
+            name: "values",
             finish: function(){
-            	var dem_data = $('#demographicsForm').alpaca().getValue();
-				dem_data['time_elapsed'] = getSlideTime();
-            	jsPsych.data.addProperties({demographics:dem_data});
-            	LITW.data.submitDemographics(dem_data);
+				//TODO Call method to get form data!
+            	let values_data = {}
+            	jsPsych.data.addProperties({values1:values_data});
+            	LITW.data.submitStudyData(values_data);
             }
         });
 
-
-		// VALUES PART 1
-		timeline.push({
-            type: "display-slide",
-            template: values1Template,
-            display_element: $("#values1"),
-            name: "values1",
-            finish: function(){
-            	var values1_data = $('#valuesForm1').alpaca().getValue();
-				values1_data['time_elapsed'] = getSlideTime();
-				for(let quest of [1,2,3,4,5]) {
-					params.participant_values[`q${quest}`]=values1_data[`q${quest}`];
-				}
-            	jsPsych.data.addProperties({values1:values1_data});
-            	LITW.data.submitStudyData(values1_data);
-            }
-        });
-
-		// VALUES PART 2
-		timeline.push({
-            type: "display-slide",
-            template: values2Template,
-            display_element: $("#values2"),
-            name: "values2",
-            finish: function(){
-            	var values2_data = $('#valuesForm2').alpaca().getValue();
-				for(let quest of [6,7,8,9,10,11]) {
-					params.participant_values[`q${quest}`]=values2_data[`q${quest}`];
-				}
-				values2_data['time_elapsed'] = getSlideTime();
-            	jsPsych.data.addProperties({values2:values2_data});
-            	LITW.data.submitStudyData(values2_data);
-            }
-        });
+		// // VALUES PART 2
+		// timeline.push({
+        //     type: "display-slide",
+        //     template: values2Template,
+        //     display_element: $("#values2"),
+        //     name: "values2",
+        //     finish: function(){
+        //     	var values2_data = $('#valuesForm2').alpaca().getValue();
+		// 		for(let quest of [6,7,8,9,10,11]) {
+		// 			params.participant_values[`q${quest}`]=values2_data[`q${quest}`];
+		// 		}
+		// 		values2_data['time_elapsed'] = getSlideTime();
+        //     	jsPsych.data.addProperties({values2:values2_data});
+        //     	LITW.data.submitStudyData(values2_data);
+        //     }
+        // });
 
 		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
 		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
@@ -228,8 +226,8 @@ module.exports = (function(exports) {
 					d3_csv.csv("src/i18n/conversations-en.csv").then(function(data) {
 						params.convo_data = data;
 						configureStudy();
-						showIRB(startStudy);
-						//startStudy();
+						//showIRB(startStudy);
+						startStudy();
 					});
 				},
 

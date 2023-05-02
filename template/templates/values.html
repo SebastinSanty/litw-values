@@ -1,0 +1,120 @@
+<div class="row">
+    <div class="col-12">
+        <h4 class="h4 bolded-blue text-center" data-i18n="study-values-vquest-title"></h4>
+        <br>
+    </div>
+</div>
+<form id="valuesForm" style="text-align: left">
+    <div class="mb-3" id="q1">
+        <label class="form-label" data-i18n="study-values-vquest-q1"></label>
+        <div id="q1_help" class="form-text" data-i18n="study-values-vquest-r_imp-help"></div>
+        <div class="">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r1" value="1">
+                <label class="form-check-label" for="q1_r1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r2" value="2">
+                <label class="form-check-label" for="q1_r2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r3" value="3">
+                <label class="form-check-label" for="q1_r3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r4" value="4">
+                <label class="form-check-label" for="q1_r4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r5" value="5">
+                <label class="form-check-label" for="q1_r5">5</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r6" value="6">
+                <label class="form-check-label" for="q1_r6">6</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r7" value="7">
+                <label class="form-check-label" for="q1_r7">7</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r8" value="8">
+                <label class="form-check-label" for="q1_r8">8</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r9" value="9">
+                <label class="form-check-label" for="q1_r9">9</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q1_radio" id="q1_r10" value="10">
+                <label class="form-check-label" for="q1_r10">10</label>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3" id="q2">
+        <label class="form-label" data-i18n="study-values-vquest-q2"></label>
+        <div id="q2_help" class="form-text" data-i18n="study-values-vquest-r_just-help"></div>
+        <div class="">
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r1" value="1">
+                <label class="btn btn-primary" for="q2_r1">1</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r2" value="2">
+                <label class="btn btn-primary" for="q2_r2">2</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r3"  value="3">
+                <label class="btn btn-primary" for="q2_r3">3</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r4" value="4">
+                <label class="btn btn-primary" for="q2_r4">4</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r5"  value="5">
+                <label class="btn btn-primary" for="q2_r5">5</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r6" value="6">
+                <label class="btn btn-primary" for="q2_r6">6</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r7" value="7">
+                <label class="btn btn-primary" for="q2_r7">7</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r8" value="8">
+                <label class="btn btn-primary" for="q2_r8">8</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r9" value="9">
+                <label class="btn btn-primary" for="q2_r9">9</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" class="btn-check" name="q2_radio" id="q2_r10" value="10">
+                <label class="btn btn-primary" for="q2_r10">10</label>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+let isFormComplete = function() {
+
+}
+
+let getQuestionAnswered = function(q_name) {
+    let input_fields = $(`input[name="${q_name}"]`);
+    if (input_fields.length>0) {
+        switch (input_fields[0].type){
+            case 'radio':
+                return $(`input[name="${q_name}"]:checked`).val();
+                break;
+            default:
+                throw TypeError('Field type not supported.');
+        }
+    } else {
+        return null;
+    }
+}
+</script>
