@@ -226,8 +226,8 @@ module.exports = (function(exports) {
 					d3_csv.csv("src/i18n/conversations-en.csv").then(function(data) {
 						params.convo_data = data;
 						configureStudy();
-						//showIRB(startStudy);
-						startStudy();
+						showIRB(startStudy);
+						//startStudy();
 					});
 				},
 
