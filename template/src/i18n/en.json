@@ -46,7 +46,7 @@
   "litw-demographics-nodisclose": "Prefer not to disclose",
   "litw-demographics-other": "Prefer to self-describe",
   "litw-demographics-gender-other": "Please, describe your gender:",
-  "litw-demographics-age": "How old are you?",
+  "litw-demographics-age": "How old are you? (Please type in a number.)",
   "litw-demographics-education": "What is your highest level of formal education?",
   "litw-demographics-education1": "No formal education",
   "litw-demographics-education2": "Incomplete primary school",

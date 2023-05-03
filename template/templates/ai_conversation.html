@@ -49,6 +49,7 @@
     let convos = LITW.study.params.convo_snippets;
     let current_convo = 1;
     let user_interrupted_convo = false;
+    let convo_data = {};
 
     let show_message = function (msg_id, take_time=MSG_TIMEOUT, callback) {
         return new Promise(function(resolve, reject) {
@@ -80,6 +81,9 @@
     let req_question = function () {
         let q1 = convos[current_convo-1]['q1'];
         let q2 = convos[current_convo-1]['q2'];
+        convo_data[current_convo] = {};
+        convo_data[current_convo]['choice1'] = convos[current_convo-1]['q1_id'];
+        convo_data[current_convo]['choice2'] = convos[current_convo-1]['q2_id'];
 
         $('#button_q1').text(q1);
         $('#button_q2').text(q2);
@@ -91,6 +95,7 @@
     }
 
     let question_chosen = function( choice_num ) {
+        convo_data[current_convo]['selection'] = choice_num;
         let convo_q_id = `q${current_convo}`;
         let convo_q = convos[current_convo-1][`q${choice_num}`];
         let convo_a_id = `a${current_convo}`;
@@ -129,6 +134,7 @@
     }
 
     let end_convo = function (){
+        LITW.study.params['convo_data']=convo_data;
         //TODO: We need a new LITW.utils that only shows, but doesn't configure the next button!!!!
         $('#btn-next-page').attr('style', 'display:block;');
         $('#btn-next-page')[0].scrollIntoView();
