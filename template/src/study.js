@@ -25,6 +25,7 @@ var irbTemplate = require("../templates/irb.html");
 var demographicsTemplate = require("../templates/demographics.html");
 var valuesTemplate = require("../templates/values.html");
 var conversationTemplate = require("../templates/ai_conversation.html");
+var impressionsTemplate = require("../templates/postStudyQuest.html");
 var loadingTemplate = require("../templates/loading.html");
 var resultsTemplate = require("../templates/results.html");
 var progressTemplate = require("../templates/progress.html");
@@ -42,6 +43,7 @@ module.exports = (function(exports) {
 		preLoad: ["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"],
 		participant_values: {},
 		convo_data: null,
+		impressions_data: null,
 		convo_length_max: 10,
 		convo_length_min: 2,
 		convo_snippets: []
@@ -70,18 +72,18 @@ module.exports = (function(exports) {
 		// ******* BEGIN STUDY PROGRESSION ******** //
 
 		//DEMOGRAPHICS
-		// timeline.push({
-        //     type: "display-slide",
-        //     template: demographicsTemplate,
-        //     display_element: $("#demographics"),
-        //     name: "demographics",
-        //     finish: function(){
-        //     	var dem_data = $('#demographicsForm').alpaca().getValue();
-		// 		dem_data['time_elapsed'] = getSlideTime();
-        //     	jsPsych.data.addProperties({demographics:dem_data});
-        //     	LITW.data.submitDemographics(dem_data);
-        //     }
-        // });
+		timeline.push({
+            type: "display-slide",
+            template: demographicsTemplate,
+            display_element: $("#demographics"),
+            name: "demographics",
+            finish: function(){
+            	var dem_data = $('#demographicsForm').alpaca().getValue();
+				dem_data['time_elapsed'] = getSlideTime();
+            	jsPsych.data.addProperties({demographics:dem_data});
+            	LITW.data.submitDemographics(dem_data);
+            }
+        });
 
 
 		// VALUES QUESTIONNAIRE
@@ -98,6 +100,8 @@ module.exports = (function(exports) {
         //     }
         // });
 
+
+		// AI CONVERSATION
 		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
 		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
 		for (let counter = 0; counter < params.convo_length_max; counter++ ){
@@ -132,6 +136,24 @@ module.exports = (function(exports) {
             }
         });
 
+
+		// IMPRESSIONS QUESTIONNAIRE
+		timeline.push({
+            type: "display-slide",
+            template: impressionsTemplate,
+			display_next_button: false,
+            display_element: $("#impressions"),
+            name: "impressions",
+            finish: function(){
+            	let impressions_data = {
+					impressions: params.impressions_data,
+					time_elapsed: getSlideTime()
+				}
+            	LITW.data.submitStudyData(impressions_data);
+            }
+        });
+
+		//COMMENTS
 		timeline.push({
 			type: "display-slide",
 			template: commentsTemplate,
@@ -211,8 +233,8 @@ module.exports = (function(exports) {
 					d3_csv.csv("src/i18n/conversations-en.csv").then(function(data) {
 						params.convo_data = data;
 						configureStudy();
-						//showIRB(startStudy);
-						startStudy();
+						showIRB(startStudy);
+						//startStudy();
 					});
 				},
 
