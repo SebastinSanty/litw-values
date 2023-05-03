@@ -1,11 +1,13 @@
 <div class="row">
     <div class="col-12">
-        <h2 class="h3 bolded-blue text-center">
+        <div id="title" class="h3 bolded-blue text-center">
             <span data-i18n="litw-demographics-title"></span>
-            <span data-toggle="tooltip" data-placement="right" data-i18n="[title]litw-demographics-title-tip">
-                <span class="tip-handler" data-i18n="litw-demographics-title-tip-text"></span>
-            </span>
-        </h2>
+            <a class="bi bi-question-circle" style="cursor: pointer" onclick="show_data_info()"></a>
+        </div>
+        <div id="data_info_alert" class="alert alert-warning alert-dismissible hidden" role="alert">
+            <span data-i18n="litw-demographics-title-tip"></span>
+            <button type="button" class="btn-close" onclick="hide_data_info()"></button>
+        </div>
         <p class="text-center" id="requiredMessage" data-i18n="litw-demographics-required"></p>
 
         <br>
@@ -14,6 +16,14 @@
 </div>
 <div id="demographicsForm" style="text-align: left"></div>
 <script type="text/javascript">
+    let show_data_info = function(){
+        $('#data_info_alert').show();
+    }
+
+    let hide_data_info = function(){
+        $('#data_info_alert').hide();
+    }
+
     $(document).ready(function() {
         let countries = {};
         let languages = {};
