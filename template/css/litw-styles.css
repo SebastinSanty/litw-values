@@ -34,6 +34,10 @@ html, body {
 		width: 800px;
 		margin: 0 auto;
 	}
+
+	.litw-flex-orientation {
+		flex-direction: row!important;
+	}
 }
 
 @media only screen and (max-width: 960px) {
@@ -43,6 +47,10 @@ html, body {
 
 	#comments {
 		margin: 0 auto;
+	}
+
+	.litw-flex-orientation {
+		flex-direction: column!important;
 	}
 }
 
@@ -565,6 +573,20 @@ select {
     background-color: #ffffe0;
 }
 
+.litw-form-check {
+	margin: 10px;
+}
+
+.litw-form-mb3 {
+	margin-bottom: 2rem!important;
+}
+
+.litw-form-label {
+	font-weight: bold;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
 
 /********************************************
  * LINKS

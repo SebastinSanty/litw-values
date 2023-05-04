@@ -42,6 +42,7 @@ module.exports = (function(exports) {
 		currentProgress: 0,
 		preLoad: ["img/btn-next.png","img/btn-next-active.png","img/ajax-loader.gif"],
 		participant_values: {},
+		values_data: null,
 		convo_data: null,
 		impressions_data: null,
 		convo_length_max: 10,
@@ -87,18 +88,19 @@ module.exports = (function(exports) {
 
 
 		// VALUES QUESTIONNAIRE
-		// timeline.push({
-        //     type: "display-slide",
-        //     template: valuesTemplate,
-        //     display_element: $("#values"),
-        //     name: "values",
-        //     finish: function(){
-		// 		//TODO Call method to get form data!
-        //     	let values_data = {}
-        //     	jsPsych.data.addProperties({values1:values_data});
-        //     	LITW.data.submitStudyData(values_data);
-        //     }
-        // });
+		timeline.push({
+            type: "display-slide",
+            template: valuesTemplate,
+            display_element: $("#values"),
+            name: "values",
+            finish: function(){
+            	var values_data = {
+					values: params.values_data,
+					time_elapsed: getSlideTime()
+				}
+            	LITW.data.submitStudyData(values_data);
+            }
+        });
 
 
 		// AI CONVERSATION
