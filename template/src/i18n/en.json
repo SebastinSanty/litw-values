@@ -159,5 +159,16 @@
   "study-convo-end": "I have to go now. See you around!",
   "study-convo-end_a": "Sure thing! Bye bye!",
   "study-convo-by_ai": "Sent by AI",
-  "study-convo-by_you": "Sent by You"
+  "study-convo-by_you": "Sent by You",
+  "litw-result-header": "Your values are most closely aligned to those of people in ...",
+  "litw-result-code": "Your participant code is:",
+  "litw-more-title": "If you enjoyed this study, there's more!",
+  "litw-more-step1": "Visit and follow us on Facebook to learn about new studies:",
+  "litw-more-step2": "Share this study with your friends!",
+  "litw-more-step3": "And consider participating in some of our other studies:",
+  "litw-more-participate": "Participate now!",
+  "litw-more-study1-slogan": "How accurate is your peripheral vision?",
+  "litw-more-study1-description": "Are you curious about how accurate your peripheral vision is compared to others? Learn more about your visual perception by doing these fun tasks! This test takes around 8 minutes.",
+  "litw-more-study2-slogan": "Amazon, Apple, Facebook, Google: Can you tell the difference?",
+  "litw-more-study2-description": "Test how well you know how big tech talks. This study takes 5 minutes."
 }

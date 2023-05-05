@@ -27,9 +27,10 @@ var valuesTemplate = require("../templates/values.html");
 var conversationTemplate = require("../templates/ai_conversation.html");
 var impressionsTemplate = require("../templates/postStudyQuest.html");
 var loadingTemplate = require("../templates/loading.html");
-var resultsTemplate = require("../templates/results.html");
 var progressTemplate = require("../templates/progress.html");
 var commentsTemplate = require("../templates/comments.html");
+var resultsTemplate = require("../templates/results.html");
+var resultsFooter = require("../templates/results-footer.html");
 require("./jspsych-display-info");
 require("./jspsych-display-slide");
 
@@ -70,21 +71,21 @@ module.exports = (function(exports) {
 	}
 
 	function configureStudy() {
-		// ******* BEGIN STUDY PROGRESSION ******** //
-
-		//DEMOGRAPHICS
-		timeline.push({
-            type: "display-slide",
-            template: demographicsTemplate,
-            display_element: $("#demographics"),
-            name: "demographics",
-            finish: function(){
-            	var dem_data = $('#demographicsForm').alpaca().getValue();
-				dem_data['time_elapsed'] = getSlideTime();
-            	jsPsych.data.addProperties({demographics:dem_data});
-            	LITW.data.submitDemographics(dem_data);
-            }
-        });
+	// 	// ******* BEGIN STUDY PROGRESSION ******** //
+	//
+	// 	//DEMOGRAPHICS
+	// 	timeline.push({
+    //         type: "display-slide",
+    //         template: demographicsTemplate,
+    //         display_element: $("#demographics"),
+    //         name: "demographics",
+    //         finish: function(){
+    //         	var dem_data = $('#demographicsForm').alpaca().getValue();
+	// 			dem_data['time_elapsed'] = getSlideTime();
+    //         	jsPsych.data.addProperties({demographics:dem_data});
+    //         	LITW.data.submitDemographics(dem_data);
+    //         }
+    //     });
 
 
 		// VALUES QUESTIONNAIRE
@@ -106,67 +107,76 @@ module.exports = (function(exports) {
 		// AI CONVERSATION
 		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
 		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
-		for (let counter = 0; counter < params.convo_length_max; counter++ ){
-			let num1 = Math.floor(Math.random() * params.convo_data.length);
-			let num2 = num1;
-			while(num1 == num2){
-				num2 = Math.floor(Math.random() * params.convo_data.length);
-			}
-			let convo1 = params.convo_data[num1];
-			let convo2 = params.convo_data[num2];
-			params.convo_snippets.push({
-				q1_id: convo1.QID,
-				q1:convo1.snippetq,
-				a1:convo1.snippeta,
-				q2_id: convo2.QID,
-				q2:convo2.snippetq,
-				a2:convo2.snippeta
-			});
-		}
-		timeline.push({
-            type: "display-slide",
-			display_next_button: false,
-            template: conversationTemplate(),
-            display_element: $("#ai_convo"),
-            name: "ai_conversation",
-            finish: function(){
-				var convo_data = {
-					convo: params.convo_data,
-					time_elapsed: getSlideTime()
-				}
-            	LITW.data.submitStudyData(convo_data);
-            }
-        });
+		// for (let counter = 0; counter < params.convo_length_max; counter++ ){
+		// 	let num1 = Math.floor(Math.random() * params.convo_data.length);
+		// 	let num2 = num1;
+		// 	while(num1 == num2){
+		// 		num2 = Math.floor(Math.random() * params.convo_data.length);
+		// 	}
+		// 	let convo1 = params.convo_data[num1];
+		// 	let convo2 = params.convo_data[num2];
+		// 	params.convo_snippets.push({
+		// 		q1_id: convo1.QID,
+		// 		q1:convo1.snippetq,
+		// 		a1:convo1.snippeta,
+		// 		q2_id: convo2.QID,
+		// 		q2:convo2.snippetq,
+		// 		a2:convo2.snippeta
+		// 	});
+		// }
+		// timeline.push({
+        //     type: "display-slide",
+		// 	display_next_button: false,
+        //     template: conversationTemplate(),
+        //     display_element: $("#ai_convo"),
+        //     name: "ai_conversation",
+        //     finish: function(){
+		// 		var convo_data = {
+		// 			convo: params.convo_data,
+		// 			time_elapsed: getSlideTime()
+		// 		}
+        //     	LITW.data.submitStudyData(convo_data);
+        //     }
+        // });
 
 
 		// IMPRESSIONS QUESTIONNAIRE
-		timeline.push({
-            type: "display-slide",
-            template: impressionsTemplate,
-			display_next_button: false,
-            display_element: $("#impressions"),
-            name: "impressions",
-            finish: function(){
-            	let impressions_data = {
-					impressions: params.impressions_data,
-					time_elapsed: getSlideTime()
-				}
-            	LITW.data.submitStudyData(impressions_data);
-            }
-        });
+		// timeline.push({
+        //     type: "display-slide",
+        //     template: impressionsTemplate,
+		// 	display_next_button: false,
+        //     display_element: $("#impressions"),
+        //     name: "impressions",
+        //     finish: function(){
+        //     	let impressions_data = {
+		// 			impressions: params.impressions_data,
+		// 			time_elapsed: getSlideTime()
+		// 		}
+        //     	LITW.data.submitStudyData(impressions_data);
+        //     }
+        // });
 
 		//COMMENTS
+		// timeline.push({
+		// 	type: "display-slide",
+		// 	template: commentsTemplate,
+		// 	display_element: $("#comments"),
+		// 	name: "comments",
+		// 	finish: function(){
+		// 		var comments = $('#commentsForm').alpaca().getValue();
+		// 		if (Object.keys(comments).length > 0) {
+		// 			comments['time_elapsed'] = getSlideTime();
+		// 			LITW.data.submitComments(comments);
+		// 		}
+		// 	}
+		// });
+
+
+		//RESULTS
 		timeline.push({
-			type: "display-slide",
-			template: commentsTemplate,
-			display_element: $("#comments"),
-			name: "comments",
-			finish: function(){
-				var comments = $('#commentsForm').alpaca().getValue();
-				if (Object.keys(comments).length > 0) {
-					comments['time_elapsed'] = getSlideTime();
-					LITW.data.submitComments(comments);
-				}
+			type: "call-function",
+			func: function(){
+				showResults();
 			}
 		});
 		// ******* END STUDY PROGRESSION ******** //
@@ -181,10 +191,6 @@ module.exports = (function(exports) {
 		}
 	}
 
-	function submitData() {
-		LITW.data.submitStudyData(jsPsych.data.getLastTrialData());
-	}
-
 	function startStudy() {
 		LITW.utils.showSlide("trials");
 		jsPsych.init({
@@ -195,11 +201,41 @@ module.exports = (function(exports) {
 	}
 
 	function showResults() {
-		LITW.utils.showSlide("results");
-		$("#results").html(resultsTemplate({}));
-		LITW.results.insertFooter();
-	}
+		let resultsData = {
+			header: $.i18n('litw-result-header'),
+			results: JSON.stringify(params.values_data)
+		}
+		if('PID' in params.URL) {
+			if('STUDY_CODE' in params) {
+				resultsData.code = params.STUDY_CODE;
+			} else {
+				resultsData.code = params.URL.PID;
+			}
 
+		}
+		$("#results").html(resultsTemplate(resultsData));
+		$("#results-footer").html(resultsFooter(
+			{
+				share_url: "https://labinthewild.org",
+				share_title: $.i18n('litw-irb-header'),
+				share_text: $.i18n('litw-template-title'),
+				more_litw_studies: [{
+					study_url: "https://labinthewild.org/studies/peripheral-vision/",
+					study_logo: "http://labinthewild.org/images/virtual-chinrest.jpg",
+					study_slogan: $.i18n('litw-more-study1-slogan'),
+					study_description: $.i18n('litw-more-study1-description'),
+				},
+				{
+					study_url: "https://labinthewild.org/studies/formality-security/",
+					study_logo: "http://labinthewild.org/images/formality-logo.jpg",
+					study_slogan: $.i18n('litw-more-study2-slogan'),
+					study_description: $.i18n('litw-more-study2-description'),
+				}]
+			}
+		));
+		$("#results").i18n();
+		LITW.utils.showSlide("results");
+	}
 	function readSummaryData() {
 		$.getJSON( "summary.json", function( data ) {
 			//TODO: 'data' contains the produced summary form DB data 
@@ -209,8 +245,20 @@ module.exports = (function(exports) {
 		});
 	}
 
+	function initStudy() {
+		// generate unique participant id and geolocate participant
+		LITW.data.initialize();
+		// save URL params
+		params.URL = LITW.utils.getParamsURL();
+		if( Object.keys(params.URL).length > 0 ) {
+			LITW.data.submitData(params.URL,'litw:paramsURL');
+		}
+	}
+
 	// when the page is loaded, start the study!
 	$(document).ready(function() {
+		//TODO This methods should be something like act1().then.act2().then...
+		//... it is close enough to that... maybe the translation need to be encapsulated next.
 		// get initial data from database (maybe needed for the results page!?)
 		readSummaryData();
 
@@ -224,19 +272,18 @@ module.exports = (function(exports) {
 		}).done( function(){
 			$('head').i18n();
 			$('body').i18n();
-			// generate unique participant id and geolocate participant
-			LITW.data.initialize();
-			LITW.utils.showSlide("img-loading");
 
+			LITW.utils.showSlide("img-loading");
 			//start the study when resources are preloaded
 			jsPsych.pluginAPI.preloadImages( params.preLoad,
 				function() {
 					//TODO: This is a strange place to put this file loading!
 					d3_csv.csv("src/i18n/conversations-en.csv").then(function(data) {
 						params.convo_data = data;
+						initStudy();
 						configureStudy();
-						showIRB(startStudy);
-						//startStudy();
+						//showIRB(startStudy);
+						startStudy();
 					});
 				},
 

@@ -1,27 +1,21 @@
 
 <!-- Template for the results page -->
-<h2 class="bolded-blue">{{content.header}}</h2>
-
-{{#if bothCats}}
-	<p>{{content.predictionMsgBoth}}</p>
-{{else}}
-	<p>{{content.predictionMsg}}</p>
+{{#if code}}
+<h3>
+    <span data-i18n="litw-result-code"></span>
+    <span>{{ code }}</span>
+</h3>
 {{/if}}
 
-<div class="prediction-img-container">
-	{{#each whichCat}}
-		<img class="prediction-img" src="img/{{this}}" />
-	{{/each}}
+<h3 class="bolded-blue" style="text-align: center">{{ header }}</h3>
+<br>
+<div id="chart" class="litw-results-chart">
+    {{{results}}}
 </div>
+<br>
+<div id="results-footer"></div>
 
-<div class="results-explanation">
-	{{#each resultsExplanation}}
-		<p>{{this}}</p>
-	{{/each}}
-</div>
-
-<div class="citations">
-	{{#each citations}}
-		<p>{{this}}</p>
-	{{/each}}
-</div>
+<script src="js/d3.v5.min.js"></script>
+<script src="src/result.js"></script>
+<script>
+</script>
