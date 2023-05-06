@@ -18,7 +18,6 @@ require("./jquery.i18n");
 require("./jquery.i18n.messagestore");
 require("bootstrap");
 require("alpaca");
-//TODO: We don't need the whole d3 for only reading a csv.
 import * as d3_csv from "d3-fetch";
 var LITW_STUDY_CONTENT= require("./data");
 var irbTemplate = require("../templates/irb.html");
@@ -89,19 +88,19 @@ module.exports = (function(exports) {
 
 
 		// VALUES QUESTIONNAIRE
-		timeline.push({
-            type: "display-slide",
-            template: valuesTemplate,
-            display_element: $("#values"),
-            name: "values",
-            finish: function(){
-            	var values_data = {
-					values: params.values_data,
-					time_elapsed: getSlideTime()
-				}
-            	LITW.data.submitStudyData(values_data);
-            }
-        });
+		// timeline.push({
+        //     type: "display-slide",
+        //     template: valuesTemplate,
+        //     display_element: $("#values"),
+        //     name: "values",
+        //     finish: function(){
+        //     	var values_data = {
+		// 			values: params.values_data,
+		// 			time_elapsed: getSlideTime()
+		// 		}
+        //     	LITW.data.submitStudyData(values_data);
+        //     }
+        // });
 
 
 		// AI CONVERSATION
@@ -201,6 +200,11 @@ module.exports = (function(exports) {
 	}
 
 	function showResults() {
+		if(!params.values_data){
+			//TEST DATA
+			params.values_data = {q1:"1",q2:"2",q3:"3",q4:"4",q5:"3",q6:"2",q7:"1",q8:["uns","obd"],q9:"1",q10:"2",q11:"3"};
+			console.log(params.values_data);
+		}
 		let resultsData = {
 			header: $.i18n('litw-result-header'),
 			results: JSON.stringify(params.values_data)

@@ -9,13 +9,16 @@
 
 <h3 class="bolded-blue" style="text-align: center">{{ header }}</h3>
 <br>
-<div id="chart" class="litw-results-chart">
-    {{{results}}}
+<div id="values-map" class="litw-results-chart">
+
 </div>
+<input type="hidden" id="file-src" value="include/inglehart-welzel.csv">
 <br>
 <div id="results-footer"></div>
 
-<script src="js/d3.v5.min.js"></script>
-<script src="src/result.js"></script>
-<script>
+<script src="js/results/main.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        build_values_map('values-map');
+    });
 </script>
