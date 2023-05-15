@@ -1,3 +1,36 @@
+var calculate_individual_score = function(values_quest_responses){
+    let secular = [];
+    let secular_loadings = [.70, .61, .61, .60, .51]
+    let self_expression = [];
+    let self_expression_loadings = [.59, .59, .58, .54, .44]
+
+    //ORDERED BY LOADING FACTORS
+    // SECULAR = ['Q164', 'Y003', 'Q184', 'Q254', 'Q45']
+    //q1 - WVS:Q164 / F063 How important is God in your life
+    secular.push(values_quest_responses['q1']*10);
+    // WVS:Y003 Autonomy Index
+    // q8 - Important Child qualities
+    // ANSWERS: gm(WVS:Q7);ind(WVS:Q8);hw(WVS:Q9);for(WVS:Q10);img(WVS:Q11);tnrfop(WVS:Q12);
+    //          tsmnt(WVS:Q13);dnp(WVS:Q14);rf(WVS:Q15);uns(WVS:Q16);obd(WVS:Q17)
+    let y003 = -5
+    if ('gm')
+    //q4 - WVS:Q184 / F120 Justifiable: abortion
+    //q7 - WVS:Q254 / G006 Nationalism / How proud of nationality
+    //q9 - WVS:Q45 / E018 Future changes: Greater respect for authority
+
+
+    // SELF_EXPRESSION = ['Y002', 'Q46', 'Q182', 'Q209', 'Q57']
+    // WVS:Y002 Post-Materialist index 4-item
+    //    q10 - WVS:Q154 Aims of country: first choice
+    //    q11 - WVS:Q155 Aims of country: second choice
+    //q5 - WVS:Q46 / A008 Feeling of happiness
+    //q2 - WVS:Q182 / F118 Justifiable: homosexuality
+    self_expression.push(values_quest_responses['q1']*10);
+    //q3 - WVS:Q209 / E025 Political action: signing a petition
+    //q6 - WVS:Q57 / A165 Most people can be trusted
+
+}
+
 var build_values_map = function (element_id) {
     // set the dimensions and margins of the graph
     const map_margin = {top: 10, right: 30, bottom: 40, left: 60};

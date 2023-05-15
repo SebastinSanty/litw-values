@@ -104,7 +104,7 @@ module.exports = (function(exports) {
 
 
 		// AI CONVERSATION
-		//params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
+		// params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
 		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
 		// for (let counter = 0; counter < params.convo_length_max; counter++ ){
 		// 	let num1 = Math.floor(Math.random() * params.convo_data.length);
@@ -206,7 +206,6 @@ module.exports = (function(exports) {
 			console.log(params.values_data);
 		}
 		let resultsData = {
-			header: $.i18n('litw-result-header'),
 			results: JSON.stringify(params.values_data)
 		}
 		if('PID' in params.URL) {
