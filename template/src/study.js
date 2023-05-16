@@ -36,7 +36,7 @@ require("./jspsych-display-slide");
 module.exports = (function(exports) {
 
 	window.litwWithTouch = false;
-
+	//TODO: Global variables for data across slides... bad design! :(
 	var timeline = [],
 	params = {
 		currentProgress: 0,
@@ -73,102 +73,101 @@ module.exports = (function(exports) {
 	// 	// ******* BEGIN STUDY PROGRESSION ******** //
 	//
 	// 	//DEMOGRAPHICS
-	// 	timeline.push({
-    //         type: "display-slide",
-    //         template: demographicsTemplate,
-    //         display_element: $("#demographics"),
-    //         name: "demographics",
-    //         finish: function(){
-    //         	var dem_data = $('#demographicsForm').alpaca().getValue();
-	// 			dem_data['time_elapsed'] = getSlideTime();
-    //         	jsPsych.data.addProperties({demographics:dem_data});
-    //         	LITW.data.submitDemographics(dem_data);
-    //         }
-    //     });
+		timeline.push({
+            type: "display-slide",
+            template: demographicsTemplate,
+            display_element: $("#demographics"),
+            name: "demographics",
+            finish: function(){
+            	var dem_data = $('#demographicsForm').alpaca().getValue();
+				dem_data['time_elapsed'] = getSlideTime();
+            	jsPsych.data.addProperties({demographics:dem_data});
+            	LITW.data.submitDemographics(dem_data);
+            }
+        });
 
 
 		// VALUES QUESTIONNAIRE
-		// timeline.push({
-        //     type: "display-slide",
-        //     template: valuesTemplate,
-        //     display_element: $("#values"),
-        //     name: "values",
-        //     finish: function(){
-        //     	var values_data = {
-		// 			values: params.values_data,
-		// 			time_elapsed: getSlideTime()
-		// 		}
-        //     	LITW.data.submitStudyData(values_data);
-        //     }
-        // });
+		timeline.push({
+            type: "display-slide",
+            template: valuesTemplate,
+            display_element: $("#values"),
+            name: "values",
+            finish: function(){
+            	var values_data = {
+					values: params.values_data,
+					time_elapsed: getSlideTime()
+				}
+            	LITW.data.submitStudyData(values_data);
+            }
+        });
 
 
 		// AI CONVERSATION
-		// params.convo_data = await d3.csv("src/i18n/conversations-en.csv")
-		// console.log(`CONVO SIZE: ${params.convo_data.length}`);
-		// for (let counter = 0; counter < params.convo_length_max; counter++ ){
-		// 	let num1 = Math.floor(Math.random() * params.convo_data.length);
-		// 	let num2 = num1;
-		// 	while(num1 == num2){
-		// 		num2 = Math.floor(Math.random() * params.convo_data.length);
-		// 	}
-		// 	let convo1 = params.convo_data[num1];
-		// 	let convo2 = params.convo_data[num2];
-		// 	params.convo_snippets.push({
-		// 		q1_id: convo1.QID,
-		// 		q1:convo1.snippetq,
-		// 		a1:convo1.snippeta,
-		// 		q2_id: convo2.QID,
-		// 		q2:convo2.snippetq,
-		// 		a2:convo2.snippeta
-		// 	});
-		// }
-		// timeline.push({
-        //     type: "display-slide",
-		// 	display_next_button: false,
-        //     template: conversationTemplate(),
-        //     display_element: $("#ai_convo"),
-        //     name: "ai_conversation",
-        //     finish: function(){
-		// 		var convo_data = {
-		// 			convo: params.convo_data,
-		// 			time_elapsed: getSlideTime()
-		// 		}
-        //     	LITW.data.submitStudyData(convo_data);
-        //     }
-        // });
+		for (let counter = 0; counter < params.convo_length_max; counter++ ){
+			let num1 = Math.floor(Math.random() * params.convo_data.length);
+			let num2 = num1;
+			while(num1 == num2){
+				num2 = Math.floor(Math.random() * params.convo_data.length);
+			}
+			let convo1 = params.convo_data[num1];
+			let convo2 = params.convo_data[num2];
+			params.convo_snippets.push({
+				q1_id: convo1.QID,
+				q1:convo1.snippetq,
+				a1:convo1.snippeta,
+				q2_id: convo2.QID,
+				q2:convo2.snippetq,
+				a2:convo2.snippeta
+			});
+		}
+		timeline.push({
+            type: "display-slide",
+			display_next_button: false,
+            template: conversationTemplate(),
+            display_element: $("#ai_convo"),
+            name: "ai_conversation",
+            finish: function(){
+				var convo_data = {
+					convo: params.convo_data,
+					time_elapsed: getSlideTime()
+				}
+            	LITW.data.submitStudyData(convo_data);
+            }
+        });
 
 
 		// IMPRESSIONS QUESTIONNAIRE
-		// timeline.push({
-        //     type: "display-slide",
-        //     template: impressionsTemplate,
-		// 	display_next_button: false,
-        //     display_element: $("#impressions"),
-        //     name: "impressions",
-        //     finish: function(){
-        //     	let impressions_data = {
-		// 			impressions: params.impressions_data,
-		// 			time_elapsed: getSlideTime()
-		// 		}
-        //     	LITW.data.submitStudyData(impressions_data);
-        //     }
-        // });
+		timeline.push({
+            type: "display-slide",
+            template: impressionsTemplate,
+			display_next_button: false,
+            display_element: $("#impressions"),
+            name: "impressions",
+            finish: function(){
+            	let impressions_data = {
+					impressions: params.impressions_data,
+					time_elapsed: getSlideTime()
+				}
+            	LITW.data.submitStudyData(impressions_data);
+            }
+        });
 
 		//COMMENTS
-		// timeline.push({
-		// 	type: "display-slide",
-		// 	template: commentsTemplate,
-		// 	display_element: $("#comments"),
-		// 	name: "comments",
-		// 	finish: function(){
-		// 		var comments = $('#commentsForm').alpaca().getValue();
-		// 		if (Object.keys(comments).length > 0) {
-		// 			comments['time_elapsed'] = getSlideTime();
-		// 			LITW.data.submitComments(comments);
-		// 		}
-		// 	}
-		// });
+		timeline.push({
+			type: "display-slide",
+			template: commentsTemplate,
+			display_next_button: true,
+			display_element: $("#comments"),
+			name: "comments",
+			finish: function(){
+				var comments = $('#commentsForm').alpaca().getValue();
+				if (Object.keys(comments).length > 0) {
+					comments['time_elapsed'] = getSlideTime();
+					LITW.data.submitComments(comments);
+				}
+			}
+		});
 
 
 		//RESULTS
@@ -285,8 +284,8 @@ module.exports = (function(exports) {
 						params.convo_data = data;
 						initStudy();
 						configureStudy();
-						//showIRB(startStudy);
-						startStudy();
+						showIRB(startStudy);
+						//startStudy();
 					});
 				},
 
