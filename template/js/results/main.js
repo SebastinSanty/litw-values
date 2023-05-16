@@ -1,8 +1,15 @@
+const SECU_MEAN = [7.35750294, 0.08308678, 3.27605317, 1.51743886, 1.46345273]
+const SECU_STD = [11.3292115, 1.52101328, 8.64108833, 0.81675053, 0.75795818]
+const SECU_SCL = [3.36588941, 1.23329367, 2.93957282, 0.90374251, 0.87060794]
+const SECU_COMP = [-0.53685626, 0.49997485, 0.49865675, 0.33219126, 0.32062583]
+const SELE_MEAN = [1.57252634, 1.84430928, 3.37772271, 2.10682086, 1.68548972]
+const SELE_STD = [1.82679795, 0.58288413, 11.96037179, 1.03887591, 0.41164372]
+const SELE_SCL = [1.3515909, 0.76346848, 3.45837705, 1.01925262, 0.64159467]
+const SELE_COMP = [0.18075215, -0.2549749, 0.63375434, -0.58819779, -0.39331318]
+
 var calculate_individual_score = function(values_quest_responses){
     let secular = [];
-    let secular_loadings = [.70, .61, .61, .60, .51]
     let self_expression = [];
-    let self_expression_loadings = [.59, .59, .58, .54, .44]
 
     //ORDERED BY LOADING FACTORS
     // SECULAR = ['Q164', 'Y003', 'Q184', 'Q254', 'Q45']
