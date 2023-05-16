@@ -208,12 +208,7 @@ module.exports = (function(exports) {
 			results: JSON.stringify(params.values_data)
 		}
 		if('PID' in params.URL) {
-			if('STUDY_CODE' in params) {
-				resultsData.code = params.STUDY_CODE;
-			} else {
-				resultsData.code = params.URL.PID;
-			}
-
+			resultsData.code = LITW.data.getParticipantId();
 		}
 		$("#results").html(resultsTemplate(resultsData));
 		$("#results-footer").html(resultsFooter(
