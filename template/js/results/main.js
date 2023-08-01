@@ -76,8 +76,8 @@
         let self_exp_value = _.sum(_.zipWith(self_exp_scaled, SELE_COMP, _.multiply));
 
         return {
-            X:secular_value,
-            Y:self_exp_value
+            SELE:self_exp_value,
+            SECU:secular_value
         };
     }
 
@@ -86,11 +86,11 @@
         let u1_secu = [1, 2, 10, 3, 2];
         let u1_sele = [2, 2, 10, 1, 1];
         let u1_score = calculate_values_score(u1_secu,u1_sele);
-        let u1_test = (Math.abs(u1_score[0]-u1_result[0]) < 0.000001) && (Math.abs(u1_score[1]-u1_result[1]) < 0.000001)
+        let u1_test = (Math.abs(u1_score.SECU-u1_result[0]) < 0.000001) && (Math.abs(u1_score.SELE-u1_result[1]) < 0.000001)
         return u1_test;
     }
 
-    var build_values_map = function (element_id, participant_values_XY) {
+    var build_values_map = function (element_id, participant_SECU, participant_SELE) {
         // set the dimensions and margins of the graph
         const map_margin = {top: 10, right: 30, bottom: 40, left: 60};
         const map_width = window.screen.width / 1.6 - map_margin.left - map_margin.right;
@@ -171,13 +171,14 @@
                 })
 
             // USA,0.3873945089524334,0.9329667409602215,English-Speaking,English-Speaking
-
+            let participantX = x(participant_SELE);
+            let participantY = y(participant_SECU);
             gdots.append("circle")
-                .attr("cx", function () {
-                    return x(participant_values_XY.X)
+                .attr("cx", function (x) {
+                    return participantX;
                 })
-                .attr("cy", function () {
-                    return y(participant_values_XY.Y)
+                .attr("cy", function (y) {
+                    return participantY;
                 })
                 .attr("r", function (d) {
                     return 6
@@ -189,11 +190,11 @@
 
             gdots.append("text")
                 .text("You are here!")
-                .attr("x", function (d) {
-                    return (x("0.96"));
+                .attr("x", function (x) {
+                    return participantX;
                 })
                 .attr("y", function (d) {
-                    return (y("0.46") - 14);
+                    return (participantY - 14);
                 })
                 .style("font-size", "15px")
                 .style("fill", "red")
